@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="school_teacher_action" model="ir.actions.act_window">
+        <field name="name">Teachers</field>
+        <field name="res_model">teacher</field>
+        <field name="view_mode">tree,form,kanban</field>
+        <field name="domain">[]</field>
+        <field name="context">
+            {
+                'form_view_ref':'estbm.school_teacher_view_form',
+                'tree_view_ref':'estbm.school_teacher_view_tree',
+                'search_view_ref':'estbm.school_teacher_view_search',
+                'kanban_view_ref':'estbm.school_teacher_view_kanban'
+            }
+        </field>
+    </record>
+
+
+    <!-- form view  -->
+    <record id="school_teacher_view_form" model="ir.ui.view">
+        <field name="name">teacher view form</field>
+        <field name="model">teacher</field>
+        <field name="arch" type="xml">
+            <form string="Student Information" create="false" delete="false">
+                <header>
+                    <button type="object" name="create_teacher_user" string="Create User" class="oe_highlight" attrs="{'invisible': [('user_id', '!=', False)]}" />
+                    <button type="object" name="create_employee" string="Create Employee" class="oe_highlight" attrs="{'invisible': [('employee_id', '!=', False)]}" />
+                </header>
+                <sheet>
+                    <div class="oe_inline">
+                        <newline />
+                        <field name="image_1920" widget="image" class="oe_left oe_avatar" options="{&quot;zoom&quot;: true, &quot;preview_image&quot;: &quot;image_128&quot;}" />
+                        <div class="oe_title w-auto">
+                            <h1 class='p-4' style="margin-left:10rem;">
+                                <field name="name" placeholder="Name" required="1" invisible="1" />
+                                <table>
+                                    <tr>
+                                        <td style="padding-right:10px">
+                                            <field name="nom" required="1" placeholder="First Name" />
+                                        </td>
+                                        <td style="padding-right:10px">
+                                            <field name="prenom" placeholder="Last Name" />
+                                        </td>
+                                    </tr>
+                                </table>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="CIN" placeholder="Enter CIN" />
+                                <field name="employee_id" class='oe_read_only' required="0" />
+                                <field name="certificate_level" />
+                                <!-- <field name="job_title" placeholder="Enter your Job" required="1" /> -->
+                            </group>
+                            <group>
+                                <field name="email" required="1" placeholder="example@usms.ac.ma" />
+                                <field name="phone" placeholder="Enter Phohne Number" />
+                                <field name="dept_id" widget="many2one_tags" />
+                                <field name="job_id" widget="many2one_tags" />
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="General">
+                                <separator string="Personal Information" />
+                                <group>
+                                    <group>
+                                        <field name="nationality" widget="many2one_tags" required="1" />
+                                        <field name="gender" class="form-control" placeholder="Select Gender" required="1" />
+                                    </group>
+                                    <group>
+                                        <field name="date_of_birth" />
+                                        <field name="age" />
+                                        <field name="user_id" widget='many2one_tags' class="oe_read_only" required="0" />
+                                    </group>
+                                </group>
+                                <group string="Address Detail" name="address">
+                                    <label for="type" />
+                                    <div name="div_type">
+                                        <field class="oe_inline" name="type" />
+                                    </div>
+                                    <label for="street" string="Address" />
+                                    <div name="div_address">
+                                        <field name="street" placeholder="Address..." />
+                                        <field name="street2" placeholder="Address2..." />
+                                        <div class="address_format d-flex justify-content-center">
+                                            <field name="city" placeholder="City" />
+                                            <field name="zip" placeholder="ZIP" />
+                                        </div>
+                                        <field name="country_id" placeholder="Country" class="oe_no_button" options="{&quot;no_open&quot;: True}" />
+                                    </div>
+                                </group>
+                            </page>
+                        </notebook>
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- tree view  -->
+    <record id="school_teacher_view_tree" model="ir.ui.view">
+        <field name="name">school_teacher_view_tree</field>
+        <field name="model">teacher</field>
+        <field name="arch" type="xml">
+            <tree string="">
+                <field name="nom" />
+                <field name="prenom" />
+                <field name="age" />
+                <field name="email" />
+                <field name="dept_id" string="Department" />
+            </tree>
+        </field>
+    </record>
+
+    <!-- search view  -->
+    <record id="school_teacher_view_search" model="ir.ui.view">
+        <field name="name">school_teacher_view_search</field>
+        <field name="model">teacher</field>
+        <field name="arch" type="xml">
+            <search string="">
+                <field name="name" />
+                <group expand="0" string="Group By">
+                    <filter name="group_by_dept_id" string="Department" context="{'group_by':'dept_id'}" help="Group by Department" />
+                </group>
+                <searchpanel>
+                    <field name="dept_id" icon="fa fa-users" string='Department' enable_counters="1" />
+                    <!-- <field name="user_id" icon="fa fa-list" select="multi" /> -->
+                </searchpanel>
+            </search>
+        </field>
+    </record>
+
+
+    <!-- kanban view  -->
+    <record id="school_teacher_view_kanban" model="ir.ui.view">
+        <field name="name">school_student.view.kanban</field>
+        <field name="model">teacher</field>
+        <field name="arch" type="xml">
+            <kanban class="o_res_partner_kanban">
+                <field name="id" />
+                <field name="image_1920" />
+                <templates>
+                    <t t-name="kanban-box">
+                        <div>
+                            <div class="o_kanban_image" style='width:100px;'>
+                                <t t-if="record.image_1920.value">
+                                    <img t-att-src="kanban_image('teacher', 'image_1920', record.id.raw_value)" alt="Student" options="{'zoom': true, 'zoom_delay': 1000, 'background': true, 'preventClicks': false}" />
+                                    <field name="image_1920" widget="image" class="o_kanban_image_fill_left" options="{'zoom': true, 'zoom_delay': 1000, 'background': true, 'preventClicks': false}" />
+                                </t>
+                                <t t-if="!record.image_1920.value">
+                                    <img t-att-src="_s + &quot;/base/static/img/avatar.png&quot;" alt="Student" />
+                                </t>
+                            </div>
+                            <div class="oe_kanban_details">
+                                
+                                
+                                
+                                
+                                <!-- for adding the circle  -->
+                                <div class="o_kanban_record_top">
+                                    <div class="o_kanban_record_headings">
+                                        <strong class="o_kanban_record_title">
+                                             <div class="float-right" t-if="record.hr_icon_display.raw_value == 'presence_present'"  name="presence_present">
+                                                 <!-- Employee is present/connected and it is normal according to his work schedule  -->
+                                                 <span class="fa fa-circle text-success" role="img" aria-label="Present" title="Present" name="presence_present">
+                                                 </span>
+                                             </div>
+                                             <div class="float-right" t-if="record.hr_icon_display.raw_value == 'presence_absent'" name="presence_absent">
+                                                <!-- Employee is not present and it is normal according to his work schedule -->
+                                                <span class="fa fa-circle-o text-muted" role="img" aria-label="Absent" title="Absent" name="presence_absent">
+                                                </span>
+                                            </div>
+                                            <div class="float-right" t-if="record.hr_icon_display.raw_value == 'presence_absent_active'" name="presence_absent_active">
+                                                <!-- Employee is connected but according to his work schedule,
+                                                     he should not work for now  -->
+                                                <span class="fa fa-circle-o text-success" role="img" aria-label="Present but not active" title="Present but not active" name="presence_absent_active">
+                                                </span>
+                                            </div>
+                                            <div class="float-right" t-if="record.hr_icon_display.raw_value == 'presence_to_define'" name="presence_to_define">
+                                                <!-- Employee is not here but according to his work schedule, he should be connected -->
+                                                <span class="fa fa-circle text-warning" role="img" aria-label="To define" title="To define" name="presence_to_define">
+                                                </span>
+                                            </div>
+                                            <!-- <div class="float-right" t-if="record.hr_icon_display.raw_value == 'presence_undetermined'" name="presence_to_define">
+                                                <span class="fa fa-circle text-danger" role="img" aria-label="To define" title="To define" name="presence_to_define">
+                                                </span>
+                                            </div> -->
+                                             <field name="hr_icon_display" placeholder="Employee's Name" 
+                                             invisible="1"
+                                             />
+                                             <h2 style="font-size:1.8rem;">
+                                                 <a type="open">
+                                                     <field name="name" />
+                                                 </a>
+                                             </h2>
+                                        </strong>
+                                    </div>
+                                </div>
+                               
+                                
+
+
+
+
+
+
+
+
+                                <ul class="font-weight-bold">
+                                    <li t-if="record.email.raw_value" class="mb-2">
+                                        <a t-attf-href="mailto:#{record.email.value}">
+                                            <i class="fa fa-envelope" />
+                                            <field name="email" />
+                                        </a>
+                                    </li>
+                                    <li t-if="record.phone.raw_value">
+                                        <i class="fa fa-phone" />
+                                        <field name="phone" widget='phone' />
+                                    </li>
+                                </ul>
+                            </div>
+                            <span style="position:absolute;right:2px;bottom:2px;font-weight:bold;">
+                                <field name="certificate_level" />
+                            </span>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+
+    <menuitem id="teacher_base_menu" name="Teachers" />
+
+    <menuitem id="teacher_all_menu" name="All Teacher" action="school_teacher_action" parent="teacher_base_menu" />
+    <menuitem id="Department_menu" name="Department" action="hr.hr_department_kanban_action" parent="teacher_base_menu" />
+    <menuitem id="Job_menu" name="Job Position" action="hr.action_hr_job" parent="teacher_base_menu" />
+
+    <record id="hr.action_hr_job" model="ir.actions.act_window">
+        <field name="view_mode">kanban,tree,form</field>
+    </record>
+
+
+
+    <!-- employee view  -->
+    <!-- <record id="emp_view_form" model="ir.ui.view">
+        <field name="name">emp_view.form</field>
+        <field name="model">hr.employee</field>
+        <field name="arch" type="xml">
+            <form string="">
+                <sheet>
+                    <group>
+
+                        <field name="name" />
+                        <field name="hr_presence_state" />
+                        <field name="hr_icon_display" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record> -->
+    <!-- 
+        don't want to work so added it in the super view in the file /addons/hr/views/hr_job_views.xml in the view 'view_job_filter'
+        <record id="view_job_filter_inherit" model="ir.ui.view">
+        <field name="name">view_job_filter_inherit</field>
+        <field name="model">hr.job</field>
+        <field name="inherit_id" ref="hr.view_job_filter" />
+        <field name="arch" type="xml">
+            <xpath expr="//search" position="inside">
+                <searchpanel>
+                    <field name="state" icon="fa fa-users" string='State' enable_counters="1" />
+                </searchpanel>
+            </xpath>
+        </field>
+    </record> -->
+</odoo>

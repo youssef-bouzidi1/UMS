@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="school_chef_filiere_action" model="ir.actions.act_window">
+        <field name="name">Chefs des filieres</field>
+        <field name="res_model">chef.filiere</field>
+        <field name="view_mode">kanban,tree,form,search</field>
+        <field name="context">
+            {
+                'form_view_ref':'estbm.school_chef_filiere_view_form',
+                'search_view_ref':'estbm.school_chef_filiere_view_search',
+                'kanban_view_ref':'estbm.school_chef_filiere_view_kanban'
+            }
+        </field>
+    </record>
+
+
+    <!-- form view  -->
+    <record id="school_chef_filiere_view_form" model="ir.ui.view">
+        <field name="name">Chef filiere view form</field>
+        <field name="model">chef.filiere</field>
+        <field name="arch" type="xml">
+            <form string="Chef filiere Information" create="false" delete="false">
+                <header>
+                    <button type="object" name="create_teacher_user" string="Create User" class="oe_highlight" attrs="{'invisible': [('user_id', '!=', False)]}" />
+                    <button type="object" name="create_employee" string="Create Employee" class="oe_highlight" attrs="{'invisible': [('employee_id', '!=', False)]}" />
+                </header>
+                <sheet>
+                    <div class="oe_inline">
+                        <newline />
+                        <field name="image_1920" widget="image" class="oe_left oe_avatar" options="{&quot;zoom&quot;: true, &quot;preview_image&quot;: &quot;image_128&quot;}" />
+                        <div class="oe_title w-auto">
+                            <h1 class='p-4' style="margin-left:10rem;">
+                                <field name="name" placeholder="Name" required="1" invisible="1" />
+                                <table>
+                                    <tr>
+                                        <td style="padding-right:10px">
+                                            <field name="nom" required="1" placeholder="First Name" />
+                                        </td>
+                                        <td style="padding-right:10px">
+                                            <field name="prenom" placeholder="Last Name" />
+                                        </td>
+                                    </tr>
+                                </table>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="CIN" placeholder="Enter CIN" />
+                                <field name="employee_id" class='oe_read_only' required="0" />
+                                <field name="certificate_level" />
+
+                            </group>
+                            <group>
+                                <field name="email" required="1" placeholder="example@usms.ac.ma" />
+                                <field name="phone" placeholder="Enter Phohne Number" />
+                                <field name="dept_id" widget="many2one_tags" />
+                                <field name="job_id" widget="many2one_tags" />
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="General">
+                                <separator string="Personal Information" />
+                                <group>
+                                    <group>
+                                        <field name="nationality" widget="many2one_tags" required="1" />
+                                        <field name="gender" class="form-control" placeholder="Select Gender" required="1" />
+                                    </group>
+                                    <group>
+                                        <field name="date_of_birth" />
+                                        <field name="age" />
+                                        <field name="user_id" widget='many2one_tags' class="oe_read_only" required="0" />
+                                    </group>
+                                </group>
+                                <group string="Address Detail" name="address">
+                                    <label for="type" />
+                                    <div name="div_type">
+                                        <field class="oe_inline" name="type" />
+                                    </div>
+                                    <label for="street" string="Address" />
+                                    <div name="div_address">
+                                        <field name="street" placeholder="Address..." />
+                                        <field name="street2" placeholder="Address2..." />
+                                        <div class="address_format d-flex justify-content-center">
+                                            <field name="city" placeholder="City" />
+                                            <field name="zip" placeholder="ZIP" />
+                                        </div>
+                                        <field name="country_id" placeholder="Country" class="oe_no_button" options="{&quot;no_open&quot;: True}" />
+                                    </div>
+                                </group>
+                                <group string="Fliere List">
+                                    <field name="filiere_list" widget="many2many" />
+                                </group>
+                            </page>
+                        </notebook>
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+    <!-- search view  -->
+    <record id="school_chef_filiere_view_search" model="ir.ui.view">
+        <field name="name">school_chef_filiere_view_search</field>
+        <field name="model">chef.filiere</field>
+        <field name="arch" type="xml">
+            <search string="">
+                <field name="name" />
+                <group expand="0" string="Group By">
+                    <filter name="group_by_dept_id" string="Department" context="{'group_by':'dept_id'}" help="Group by Department" />
+                </group>
+                <searchpanel>
+                    <field name="dept_id" icon="fa fa-users" string='Department' enable_counters="1" />
+                </searchpanel>
+            </search>
+        </field>
+    </record>
+
+
+    <!-- kanban view  -->
+    <record id="school_chef_filiere_view_kanban" model="ir.ui.view">
+        <field name="name">school_chef_filiere_view_kanban</field>
+        <field name="model">chef.filiere</field>
+        <field name="arch" type="xml">
+            <kanban class="o_res_partner_kanban">
+                <field name="id" />
+                <field name="image_1920" />
+                <templates>
+                    <t t-name="kanban-box">
+                        <div>
+                            <div class="o_kanban_image" style='width:100px;'>
+                                <t t-if="record.image_1920.value">
+                                    <!-- <img t-att-src="kanban_image('student', 'image_1920', record.id.raw_value)" alt="Student" options="{'zoom': true, 'zoom_delay': 1000, 'background': true, 'preventClicks': false}" /> -->
+                                    <field name="image_1920" widget="image" class="o_kanban_image_fill_left" options="{&quot;zoom&quot;: true, &quot;preview_image&quot;: &quot;image_128&quot;}" />
+                                    <!-- <field name="image_1920" widget="image" class="oe_avatar float-right" options="{&quot;zoom&quot;: true, &quot;preview_image&quot;: &quot;image_128&quot;}" /> -->
+                                </t>
+                                <t t-if="!record.image_1920.value">
+                                    <img t-att-src="_s + &quot;/base/static/img/avatar.png&quot;" alt="Student" />
+                                </t>
+                            </div>
+                            <div class="oe_kanban_details " style="margin-left:40px;">
+                                <h2 style="font-size:1.8rem;">
+                                    <a type="open">
+                                        <field name="name" />
+                                    </a>
+                                </h2>
+                                <ul class="font-weight-bold">
+                                    <li t-if="record.email.raw_value" class="mb-2">
+                                        <a t-attf-href="mailto:#{record.email.value}">
+                                            <i class="fa fa-envelope" />
+                                            <field name="email" />
+                                        </a>
+                                    </li>
+                                    <li t-if="record.phone.raw_value">
+                                        <i class="fa fa-phone" />
+                                        <field name="phone" widget='phone' />
+                                    </li>
+                                </ul>
+                            </div>
+                            <span style="position:absolute;right:2px;bottom:2px;font-weight:bold;">
+                                <field name="certificate_level" />
+                            </span>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+
+    <menuitem id="chef_filiere_base_menu" name="Chefs Des Filieres" />
+
+    <menuitem id="chef_filiere_all_menu" name="Chefs" action="school_chef_filiere_action" parent="chef_filiere_base_menu" />
+
+</odoo>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    
+    <record id="school_a1_action" model="ir.actions.act_window">
+        <field name="name">Emplois De Temps</field>
+        <field name="res_model">a1</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[]</field>
+    </record>
+
+    <record id="school_a2_action" model="ir.actions.act_window">
+        <field name="name">Emplois De Temps</field>
+        <field name="res_model">a2</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[]</field>
+    </record>
+
+
+    <menuitem id="a1_base_menu" name="a1" sequence="10" />
+    <menuitem id="school_a1_all_menu" name="Emplois de Temps" action="school_a1_action" parent="a1_base_menu" />
+    <menuitem id="school_a2_all_menu" name="Emplois de Temps" action="school_a2_action" parent="a1_base_menu" />
+
+</odoo>

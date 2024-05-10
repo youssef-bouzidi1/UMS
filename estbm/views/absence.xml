@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="school_absence_action" model="ir.actions.act_window">
+        <field name="name">absences</field>
+        <field name="res_model">attendance.sheet</field>
+        <field name="view_mode">tree,form,search</field>
+        <field name="context">
+            {
+                'form_view_ref':'estbm.school_absence_view_form',
+                'search_view_ref':'estbm.school_absence_view_search',
+                'tree_view_ref':'estbm.school_absence_view_tree',
+            }
+        </field>
+    </record>
+
+
+    <!-- form view  -->
+    <record id="school_absence_view_form" model="ir.ui.view">
+        <field name="name">absence view form</field>
+        <field name="model">attendance.sheet</field>
+        <field name="arch" type="xml">
+            <form string="absence Information" create="false" delete="false">
+                <sheet>
+                <group>
+                  <field name="name" />
+                  <field name="date" />
+                </group>
+                <group>
+                <field name="absent"/>
+                <field name="student_list_2" widget="many2many" />
+                </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- tree view  -->
+    <record id="school_absence_view_tree" model="ir.ui.view">
+        <field name="name">absence view tree</field>
+        <field name="model">attendance.sheet</field>
+        <field name="arch" type="xml">
+                <tree string="">
+                  <field name="name" />
+                  <field name="date" />
+                </tree>
+        </field>
+    </record>
+
+
+    <!-- search view  -->
+    <record id="school_absence_view_search" model="ir.ui.view">
+        <field name="name">school_absence_view_search</field>
+        <field name="model">attendance.sheet</field>
+        <field name="arch" type="xml">
+            <search string="">
+                <field name="name" />
+                <field name="date" />
+            </search>
+        </field>
+    </record>
+
+
+
+
+    <menuitem id="absence_base_menu" name="absences" />
+
+    <menuitem id="absence_all_menu" name="absence" action="school_absence_action" parent="absence_base_menu" />
+
+</odoo>

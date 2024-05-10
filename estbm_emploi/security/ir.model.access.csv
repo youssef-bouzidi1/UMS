@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_estbm_emploi_temps_user,estbm_emploi_temps_user,model_emploi_temps,group_emploi_temps_user,1,0,0,0
+access_estbm_seance_jour_user,estbm_seance_jour_user,model_seance_jour,group_emploi_temps_user,1,0,0,0
+access_estbm_seance_temps_user,estbm_seance_temps_user,model_seance_temps,group_emploi_temps_user,1,0,0,0

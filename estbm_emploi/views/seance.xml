@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+
+    <record id="school_seance_action" model="ir.actions.act_window">
+        <field name="name">Seances</field>
+        <field name="res_model">seance</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[]</field>
+        <field name="context">
+            {
+                'tree_view_ref':'estbm_emploi.school_seance_view_tree',
+                'form_view_ref':'estbm_emploi.school_seance_view_form',
+            }
+        </field>
+    </record>
+
+
+    <!-- form view  -->
+    <record id="school_seance_view_form" model="ir.ui.view">
+        <field name="name">school_seance_view.form</field>
+        <field name="model">seance</field>
+        <field name="arch" type="xml">
+            <form string="">
+                <sheet>
+                    <group>
+                        <field name="element_id" />
+                        <field name="teacher_id" />
+                        <field name="temps_id" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+    <!-- tree view  -->
+    <record id="school_seance_view_tree" model="ir.ui.view">
+        <field name="name">school_seance_view.tree</field>
+        <field name="model">seance</field>
+        <field name="arch" type="xml">
+            <tree string="">
+                <field name="name" />
+                <field name="element_id" />
+                <field name="teacher_id" />
+            </tree>
+        </field>
+    </record>
+
+
+    <record id="school_seance_jour_action" model="ir.actions.act_window">
+        <field name="name">Jours</field>
+        <field name="res_model">seance.jour</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[]</field>
+        <field name="context">
+            {
+                'tree_view_ref':'estbm_emploi.school_seance_jour_view_tree',
+                'form_view_ref':'estbm_emploi.school_seance_jour_view_form',
+            }
+        </field>
+    </record>
+
+
+    <!-- form view  -->
+    <record id="school_seance_jour_view_form" model="ir.ui.view">
+        <field name="name">school_seance_jour_view.form</field>
+        <field name="model">seance.jour</field>
+        <field name="arch" type="xml">
+            <form string="">
+                <sheet>
+                    <group>
+                        <field name="day" />
+                        <!-- <field name="start_time" /> -->
+                        <field name="temps_id" />
+                        <field name="teacher_id" />
+                        <field name="element_id" />
+                        <field name="emploi_id" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+    <!-- tree view  -->
+    <record id="school_seance_jour_view_tree" model="ir.ui.view">
+        <field name="name">school_seance_jour_view.tree</field>
+        <field name="model">seance.jour</field>
+        <field name="arch" type="xml">
+            <tree string="" default_order='start_time asc' editable="bottom">
+                <field name="day" />
+                <field name="start_time" invisible='1' />
+                <field name="temps_id" />
+                <field name="teacher_id" />
+                <field name="element_id" />
+                <field name="emploi_id" />
+            </tree>
+        </field>
+    </record>
+
+
+    <record id="school_seance_temps_action" model="ir.actions.act_window">
+        <field name="name">temps</field>
+        <field name="res_model">seance.temps</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[]</field>
+        <field name="context">
+            {
+                'tree_view_ref':'estbm_emploi.school_seance_temps_view_tree',
+                'form_view_ref':'estbm_emploi.school_seance_temps_view_form',
+            }
+        </field>
+    </record>
+
+
+    <!-- form view  -->
+    <record id="school_seance_temps_view_form" model="ir.ui.view">
+        <field name="name">school_seance_temps_view.form</field>
+        <field name="model">seance.temps</field>
+        <field name="arch" type="xml">
+            <form string="">
+                <sheet>
+                    <group>
+                        <field name="start_hour" />
+                        <field name="start_minute" />
+                        <field name="end_hour" />
+                        <field name="end_minute" />
+                        <field name="duration" />
+                        <!-- <field name="start_time"   /> -->
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+    <!-- tree view  -->
+    <record id="school_seance_temps_view_tree" model="ir.ui.view">
+        <field name="name">school_seance_temps_view.tree</field>
+        <field name="model">seance.temps</field>
+        <field name="arch" type="xml">
+            <tree string="" editable="bottom">
+                <field name="name" />
+                <field name="start_hour" />
+                <field name="start_minute" />
+                <field name="end_hour" />
+                <field name="end_minute" />
+                <field name="duration" />
+                <!-- <field name="start_time"  /> -->
+            </tree>
+        </field>
+    </record>
+
+
+    <menuitem id="seance_base_menu" name="Seances" sequence="10" />
+    <menuitem id="school_seance_jour_all_menu" name="Jours" action="school_seance_jour_action" parent="emploi_temps_base_menu" />
+    <menuitem id="school_seance_all_menu" name="Seances" action="school_seance_action" parent="seance_base_menu" />
+    <menuitem id="school_seance_temps_all_menu" name="Temps" action="school_seance_temps_action" parent="emploi_temps_base_menu" />
+
+
+    <odoo noupdate='1'>
+        <record id="unique_element_module_code" model="ir.sequence">
+            <field name="name">Element Module number</field>
+            <field name="code">element.sequence.code</field>
+            <field name="active">TRUE</field>
+            <field name="prefix">E</field>
+            <field name="padding">4</field>
+            <field name="number_next">0001</field>
+            <field name="number_increment">1</field>
+        </record>
+    </odoo>
+
+</odoo>

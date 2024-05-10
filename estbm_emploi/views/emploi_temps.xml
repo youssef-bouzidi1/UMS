@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+
+    <record id="school_emploi_temps_action" model="ir.actions.act_window">
+        <field name="name">Emplois De Temps</field>
+        <field name="res_model">emploi.temps</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[]</field>
+        <field name="context">
+            {
+                'tree_view_ref':'estbm_emploi.school_emploi_temps_view_tree',
+                'form_view_ref':'estbm_emploi.school_emploi_temps_view_form',
+            }
+        </field>
+    </record>
+
+
+    <!-- form view  -->
+    <record id="school_emploi_temps_view_form" model="ir.ui.view">
+        <field name="name">school_emploi_temps_view.form</field>
+        <field name="model">emploi.temps</field>
+        <field name="arch" type="xml">
+            <form string="">
+                <sheet>
+                    <div class='text-center m-4 text-primary'>
+                        <h1>
+                            <field name="name" class='oe_read_only' />
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="start_date" />
+                            <field name="year" />
+                        </group>
+                        <group>
+                            <field name="college_year" />
+                            <!-- <field name="semester_1" class="oe_edit_only" attrs="{ 
+                                'invisible': [('year','=','2')] 
+                            }" />
+                            <field name="semester_2" class="oe_edit_only" attrs="{ 
+                                'invisible': [('year','=','1')] 
+                            }" /> -->
+                            <field name="semester" />
+                            <field name='total_hours'/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="class_id" widget='many2one_tags' />
+                        <field name="has_groupe" />
+                        <field name="groupe_id" widget='many2one_tags' domain="[('class_id', '=', class_id)]" attrs="{ 'invisible': [('has_groupe','=',False)] }" />
+
+                        <!-- <field name="dept_id"  /> -->
+                    </group>
+                    <notebook>
+                        <page name="monday" string="Monday">
+                            <group>
+                                <field name="day_0" nolabel="1" context="{'default_day': '0','default_order':'id desc'}" />
+                            </group>
+                        </page>
+                        <page name="tuesday" string="Tuesday">
+                            <group>
+                                <field name="day_1" nolabel="1" context="{'default_day': '1'}" />
+                            </group>
+                        </page>
+                        <page name="wednesday" string="Wednesday">
+                            <group>
+                                <field name="day_2" nolabel="1" context="{'default_day': '2'}" />
+                            </group>
+                        </page>
+                        <page name="thursday" string="Thursday">
+                            <group>
+                                <field name="day_3" nolabel="1" context="{'default_day': '3'}" />
+                            </group>
+                        </page>
+                        <page name="friday" string="Friday">
+                            <group>
+                                <field name="day_4" nolabel="1" context="{'default_day': '4'}" />
+                            </group>
+                        </page>
+                        <page name="saturday" string="Saturday">
+                            <group>
+                                <field name="day_5" nolabel="1" context="{'default_day': '5'}" />
+                            </group>
+                        </page>
+                        <page name="sunday" string="Sunday">
+                            <group>
+                                <field name="day_6" nolabel="1" context="{'default_day': '6'}" />
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <footer groups="base.group_user">
+                    <!-- <button string="Proceed" type="object" name="act_gen_time_table" class="oe_highlight" /> -->
+                    <!-- <button special="cancel" string="Close" type="object" /> -->
+                </footer>
+
+
+            </form>
+        </field>
+    </record>
+
+
+    <!-- tree view  -->
+    <record id="school_emploi_temps_view_tree" model="ir.ui.view">
+        <field name="name">school_emploi_temps_view.tree</field>
+        <field name="model">emploi.temps</field>
+        <field name="arch" type="xml">
+            <tree string="">
+                <field name="id" />
+                <field name="start_date" />
+                <!-- <field name="class_id" /> -->
+                <!-- <field name="name" />
+                <field name="capacity" />
+                <field name="filiere_id" string="Filiere" /> -->
+            </tree>
+        </field>
+    </record>
+
+
+    <!-- inherit class view form to add the emploi id  -->
+    <record id="school_classe_view_form_inherit" model="ir.ui.view">
+        <field name="name">Inherit classe view form</field>
+        <field name="model">classe</field>
+        <field name="inherit_id" ref="estbm.school_classe_view_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//group" position="after">
+                <group>
+                    <field name="emploi_ids" widget='one2many_tags'>
+                        <tree>
+                            <field name="name" />
+                            <field name="year" />
+                            <field name="semester" />
+                        </tree>
+                    </field>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- inherit groupe view form to add the emploi id  -->
+    <record id="school_groupe_view_form_inherit" model="ir.ui.view">
+        <field name="name">Inherit groupe view from</field>
+        <field name="model">groupe</field>
+        <field name="inherit_id" ref="estbm.school_groupe_view_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//group" position="inside">
+                <field name="emploi_id" />
+            </xpath>
+        </field>
+    </record>
+
+    <!-- inherit teacher view form to add the seances ids  -->
+    <record id="school_teacher_view_form_inherit" model="ir.ui.view">
+        <field name="name">Inherit teacher view from</field>
+        <field name="model">teacher</field>
+        <field name="inherit_id" ref="estbm.school_teacher_view_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page name="Seances" string="Seances">
+                    <field name="seance_ids" widget='one2many_tags' />
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+
+    <!-- inherit student view form to add the emploi ids  -->
+    <record id="school_student_view_form_inherit" model="ir.ui.view">
+        <field name="name">Inherit student view from</field>
+        <field name="model">student</field>
+        <field name="inherit_id" ref="estbm.school_student_view_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page name="Seances" string="Seances">
+                    <field name="emploi_ids" />
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+
+    <menuitem id="emploi_temps_base_menu" name="Emplois de Temps" sequence="10" />
+    <menuitem id="school_emploi_temps_all_menu" name="Emplois de Temps" action="school_emploi_temps_action" parent="emploi_temps_base_menu" />
+
+</odoo>

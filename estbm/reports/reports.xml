@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    
+    <record id="action_student_id_card_report" model="ir.actions.report">
+        <field name="name">Student ID Card</field>
+        <field name="model">student</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">estbm.student_id_card_template</field>
+        <field name="report_file">estbm.student_id_card_template</field>
+        <field name="groups_id" eval="[(4,ref('base.group_erp_manager'))]" />
+        <field name="binding_model_id" ref="model_student"/>
+        <field name="binding_type">report</field>
+    </record>
+    <record id="action_filiere_sheet_card_report" model="ir.actions.report">
+        <field name="name">Filiere Card</field>
+        <field name="model">filiere</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">estbm.filiere_sheet_card_template</field>
+        <field name="report_file">estbm.filiere_sheet_card_template</field>
+        <field name="groups_id" eval="[(4,ref('base.group_erp_manager'))]" />
+        <field name="binding_model_id" ref="model_filiere"/>
+        <field name="binding_type">report</field>
+    </record>
+
+</odoo>

@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+	<data>
+		<!-- Student category  -->
+		<record model="ir.module.category" id="module_category_students">
+			<field name="name">Students</field>
+			<field name="description">Helps you manage your students.</field>
+			<field name="sequence">10</field>
+		</record>
+
+		<!-- Groups of Students  -->
+		<record id="group_student_user" model="res.groups">
+			<field name="name">User</field>
+			<field name="category_id" ref="module_category_students" />
+		</record>
+
+		<record id="group_student_admin" model="res.groups">
+			<field name="name">Administrator</field>
+			<field name="category_id" ref="module_category_students" />
+			<field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]" />
+		</record>
+
+
+		<!-- Teachers category  -->
+		<record model="ir.module.category" id="module_category_teachers">
+			<field name="name">Teachers</field>
+			<field name="description">Helps you manage your teachers.</field>
+			<field name="sequence">10</field>
+		</record>
+
+
+		<!-- Groups of Teachers  -->
+		<record id="group_teacher_user" model="res.groups">
+			<field name="name">User</field>
+			<field name="category_id" ref="module_category_teachers" />
+		</record>
+
+		<record id="group_teacher_admin" model="res.groups">
+			<field name="name">Administrator</field>
+			<field name="category_id" ref="module_category_teachers" />
+			<field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]" />
+		</record>
+
+
+		<!-- Chefs category  -->
+		<record model="ir.module.category" id="module_category_chefs">
+			<field name="name">Chef des Filieres</field>
+			<field name="description">Helps you manage your Chefs.</field>
+			<field name="sequence">10</field>
+		</record>
+
+		<!-- Groups of Chefs  -->
+		<record id="group_chef_filiere_user" model="res.groups">
+			<field name="name">User</field>
+			<field name="category_id" ref="module_category_chefs" />
+		</record>
+
+		<record id="group_chef_filiere_admin" model="res.groups">
+			<field name="name">Administrator</field>
+			<field name="category_id" ref="module_category_chefs" />
+			<field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]" />
+		</record>
+
+
+		<!-- Filieres category  -->
+		<record model="ir.module.category" id="module_category_filieres">
+			<field name="name">Les Filieres</field>
+			<field name="description">Helps you manage your Filieres.</field>
+			<field name="sequence">10</field>
+		</record>
+
+		<!-- Groups of filieres  -->
+		<record id="group_filiere_user" model="res.groups">
+			<field name="name">User</field>
+			<field name="category_id" ref="module_category_filieres" />
+		</record>
+
+		<record id="group_filiere_admin" model="res.groups">
+			<field name="name">Administrator</field>
+			<field name="category_id" ref="module_category_filieres" />
+			<field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]" />
+		</record>
+
+
+		<!-- Classes category  -->
+		<record model="ir.module.category" id="module_category_classes">
+			<field name="name">Les Classes</field>
+			<field name="description">Helps you manage your Classes.</field>
+			<field name="sequence">10</field>
+		</record>
+
+		<!-- Groups of filieres  -->
+		<record id="group_classe_user" model="res.groups">
+			<field name="name">User</field>
+			<field name="category_id" ref="module_category_classes" />
+		</record>
+
+		<record id="group_classe_admin" model="res.groups">
+			<field name="name">Administrator</field>
+			<field name="category_id" ref="module_category_classes" />
+			<field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]" />
+		</record>
+
+
+
+
+		<!-- modules category  -->
+		<record model="ir.module.category" id="module_category_modules">
+			<field name="name">Les Modules</field>
+			<field name="description">Helps you manage your modules and semester and elements.</field>
+			<field name="sequence">10</field>
+		</record>
+
+		<!-- Groups of modules  -->
+		<record id="group_module_user" model="res.groups">
+			<field name="name">User</field>
+			<field name="category_id" ref="module_category_modules" />
+		</record>
+		
+		<record id="group_module_chef_admin" model="res.groups">
+			<field name="name">Chef Admin</field>
+			<field name="category_id" ref="module_category_modules" />
+		</record>
+		<record id="group_module_admin" model="res.groups">
+			<field name="name">Administrator</field>
+			<field name="category_id" ref="module_category_modules" />
+			<field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]" />
+		</record>
+
+
+
+
+		<!-- Only students mine  -->
+		<record id="group_only_student_mine" model="res.groups">
+			<field name="name">Only Student Mine</field>
+		</record>
+
+		<!-- Only filieres mine  -->
+		<record id="group_only_filiere_mine" model="res.groups">
+			<field name="name">Only Filieres Mine</field>
+		</record>
+
+
+		<record id="student_rule" model="ir.rule">
+			<field name="name">Student see just his information</field>
+			<field name="model_id" ref="model_student" />
+			<field name="perm_read" eval="True" />
+			<field name="perm_create" eval="0" />
+			<field name="perm_write" eval="0" />
+			<field name="perm_unlink" eval="0" />
+			<field name="domain_force">[('user_id','=',user.id)]</field>
+			<field name="groups" eval="[(4, ref('estbm.group_only_student_mine'))]" />
+			<field name="active" eval="True" />
+		</record>
+
+
+		<record id="classe_rule" model="ir.rule">
+			<field name="name">chefs can change classe that is responsable for</field>
+			<field name="model_id" ref="model_classe" />
+			<field name="perm_read" eval="True" />
+			<field name="perm_create" eval="True" />
+			<field name="perm_write" eval="True" />
+			<field name="perm_unlink" eval="True" />
+			<field name="domain_force">[('filiere_id.chef_id.user_id','=',user.id)]</field>
+			<!-- <field name="groups" eval="[(4, ref('estbm.group_only_filiere_mine'))]" /> -->
+			<field name="active" eval="True" />
+		</record>
+
+
+		<record id="filiere_rule" model="ir.rule">
+			<field name="name">chefs can change filieres that is responsable for</field>
+			<field name="model_id" ref="model_filiere" />
+			<field name="perm_read" eval="True" />
+			<field name="perm_create" eval="True" />
+			<field name="perm_write" eval="True" />
+			<field name="perm_unlink" eval="True" />
+			<field name="domain_force">[('chef_id.user_id','=',user.id)]</field>
+			<!-- <field name="groups" eval="[(4, ref('estbm.group_only_mine'))]"  /> -->
+			<field name="active" eval="True" />
+		</record>
+
+
+	</data>
+
+</odoo>

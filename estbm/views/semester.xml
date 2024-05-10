@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="school_semester_action" model="ir.actions.act_window">
+        <field name="name">Element de module</field>
+        <field name="res_model">semester</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[]</field>
+        <field name="context">
+            {
+                'tree_view_ref':'estbm.school_semester_view_tree',
+                'form_view_ref':'estbm.school_semester_view_form',
+                'search_view_ref':'estbm.school_semester_view_search',
+            }
+        </field>
+    </record>
+
+
+    <!-- form view  -->
+    <record id="school_semester_view_form" model="ir.ui.view">
+        <field name="name">school_semester_view.form</field>
+        <field name="model">semester</field>
+        <field name="arch" type="xml">
+            <form string="">
+                <sheet>
+                    <group>
+                        <field name="name" />
+                        <field name="module_id" />
+                        <field name="element_id" />
+                        <field name="element_hours" />
+                        <field name="module_hours" />
+                        <field name="element_coeff" />
+                        <field name="filiere_id" />
+                        <field name="teacher_id" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+    <!-- tree view  -->
+    <record id="school_semester_view_tree" model="ir.ui.view">
+        <field name="name">school_semester_view.tree</field>
+        <field name="model">semester</field>
+        <field name="arch" type="xml">
+            <tree string="" editable="bottom">
+                <field name="element_id" />
+                <field name="name" />
+                <field name="module_id" />
+                <field name="element_hours" />
+                <field name="module_hours" />
+                <field name="element_coeff" />
+                <field name="filiere_id" />
+                <field name="teacher_id" />
+            </tree>
+        </field>
+    </record>
+
+
+
+     <!-- search view  -->
+     <record id="semester_view_search" model="ir.ui.view">
+        <field name="name">semester Search</field>
+        <field name="model">semester</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name" />
+                <group string="Group By">
+                    <filter name="group_by_name" string="Group by Semester" context="{'group_by':'name'} " />
+                    <filter name="group_by_module" string="Group by Modules" context="{'group_by':'module_id'} " />
+                </group>
+                <searchpanel>
+                    <field name="name" icon="fa fa-users" string='Semester' enable_counters="1" />
+                    <field name="filiere_id" icon="fa fa-list" string='Filiere' />
+                </searchpanel>
+            </search>
+        </field>
+    </record>
+
+
+    <menuitem id="school_semester_all_menu" name="Elements de module" action="school_semester_action" parent="school_module_menu" sequence='10' />
+
+
+</odoo>

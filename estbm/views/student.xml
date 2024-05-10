@@ -1,0 +1,353 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="student_duplicate_action_server" model="ir.actions.server">
+        <field name="name">Duplicate</field>
+        <field name="model_id" ref="model_student" />
+        <field name="binding_model_id" ref="model_student" />
+        <field name="state">code</field>
+        <field name="groups_id" eval="[(4,ref('base.group_erp_manager'))]" />
+        <field name="code">records.copy_student()</field>
+    </record>
+
+    <record id="student_unlink_action_server" model="ir.actions.server">
+        <field name="name">Delete</field>
+        <field name="model_id" ref="model_student" />
+        <field name="binding_model_id" ref="model_student" />
+        <field name="state">code</field>
+        <field name="groups_id" eval="[(4,ref('base.group_erp_manager'))]" />
+        <field name="code">records.delete()</field>
+    </record>
+
+    <record id="student_password_action_server" model="ir.actions.server">
+        <field name="name">Change Password</field>
+        <field name="model_id" ref="model_student" />
+        <field name="binding_model_id" ref="model_student" />
+        <field name="state">code</field>
+        <field name="groups_id" eval="[(4,ref('base.group_erp_manager'))]" />
+        <field name="code">records.change_password()</field>
+    </record>
+
+
+    <record id="school_student_action" model="ir.actions.act_window">
+        <field name="name">Persons</field>
+        <field name="res_model">student</field>
+        <field name="view_mode">kanban,tree,form,graph</field>
+        <field name="domain">[]</field>
+        <field name="context">
+            {
+                'form_view_ref':'estbm.school_student_view_form',
+                'search_view_ref':'estbm.student_view_search',
+                'tree_view_ref':'estbm.school_student_view_tree',
+                'kanban_view_ref':'estbm.school_student_view_kanban',
+                'graph_vew_ref':'estbm.school_student_view_graph'
+            }
+        </field>
+    </record>
+
+
+    <!-- form view  -->
+    <record id="school_student_view_form" model="ir.ui.view">
+        <field name="name">student view form</field>
+        <field name="model">student</field>
+        <field name="arch" type="xml">
+            <form string="Student Information" create="false" delete="false">
+                <header>
+                    <button type="object" name="create_student_user" string="Create Student User" class="oe_highlight" attrs="{'invisible': [('user_id', '!=', False)]}" />
+                    <button name="change_password" type="object" string="change it" />
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <!-- <button name="action_show_groups" type="object" groups="base.group_no_one" class="oe_stat_button" icon="fa-users">
+                            <field string="Groups" name="groups_count" widget="statinfo"/>
+                        </button> -->
+                        <!-- <button name="action_show_accesses" type="object" groups="base.group_no_one" class="oe_stat_button" icon="fa-list">
+                            <field string="Access Rights" name="accesses_count" widget="statinfo"/>
+                        </button>
+                        <button name="action_show_rules" type="object" groups="base.group_no_one" class="oe_stat_button" icon="fa-list-ul">
+                            <field string="Record Rules" name="rules_count" widget="statinfo"/>
+                        </button> -->
+                    </div>
+                    <div class="oe_inline">
+                        <newline />
+                        <div class="text-right">
+                            <b>
+                                <label for='student_code' class="oe_read_only">Student Code : </label>
+
+                                <field name="student_code" readonly="1" />
+                            </b>
+                        </div>
+                        <!-- <field name="image" widget="image" class="oe_avatar" options="{&quot;zoom&quot;: true, &quot;preview_image&quot;: &quot;image&quot;}" /> -->
+                        <field name="image_1920" widget="image" class="oe_avatar float-right" options="{&quot;zoom&quot;: true, &quot;preview_image&quot;: &quot;image_128&quot;}" />
+                        <div class="oe_title">
+                            <div class="oe_read_only">
+                                <h1>
+                                    <table>
+                                        <tr>
+                                            <td style="padding-right:10px;">
+                                                <field name="nom" required="0" />
+                                            </td>
+                                            <td style="padding-right:10px;">
+                                                <field name="prenom" required="0" />
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </h1>
+                                <span>
+                                    Admit le
+                                    <strong>
+                                        <field name="admission_date" />
+                                    </strong>
+                                </span>
+                            </div>
+                            <group class="oe_edit_only">
+                                <field name="nom" placeholder="Enter First Name" />
+                                <field name="prenom" placeholder="Enter Last Name" />
+                            </group>
+                        </div>
+                        <notebook>
+                            <page string="General">
+                                <separator string="Student Info" />
+                                <group>
+                                    <group>
+                                        <field name="CIN" placeholder="Enter CIN" />
+                                        <field name="gender" placeholder="Select Gender" required="1" />
+                                        <field name="date_of_birth" />
+                                        <field name="age" />
+                                        <field name="filiere_id" widget="many2one_tags" required="1" />
+                                        <field name="class_id" widget="many2one_tags" domain="[('filiere_id', '=', filiere_id)]" required="1" attrs="{ 
+                                            'invisible': [('filiere_id','=',False)] 
+                                             }" />
+                                        <field name="groupe_id" widget="many2one_tags" domain="[('class_id', '=', class_id)]" attrs="{ 
+                                            'invisible': [('class_id','=',False)] 
+                                             }" />
+                                    </group>
+                                    <group>
+                                        <field name="CNE" placeholder="Enter CNE" />
+                                        <field name="father_name" placeholder="Enter Father" />
+                                        <field name="mother_name" placeholder="Enter Mother" />
+                                        <field name="nationality" widget="many2one_tags" required="1" />
+                                        <field name="year" class="form-control" required="1" />
+                                        <field name="user_id" widget='many2one_tags' class="oe_read_only" required="0" />
+                                    </group>
+                                </group>
+                            </page>
+                            <page string="Contact Details">
+                                <group>
+                                    <group string="login Info">
+                                        <field name="email" required="1" placeholder="example@usms.ac.ma" />
+                                        <field name="phone" widget='phone' placeholder="Enter Phohne Number" />
+                                    </group>
+                                    <group string="Address">
+                                        <div class="o_address_format">
+                                            <field name="street" class="o_address_street" placeholder="Street..." />
+                                            <field name="street2" class="o_address_street" placeholder="Street2..." />
+                                            <field name="city" placeholder="City" class="o_address_city" required="1" style="width:48%;" />
+                                            <field name="zip" placeholder="ZIP" class="o_address_zip" style="width:50%;" />
+                                            <field name="country_id" placeholder="Country" class="o_address_country,oe_no_button" options="{&quot;no_open&quot;: True}" required="1" />
+                                        </div>
+                                    </group>
+                                </group>
+                            </page>
+                        </notebook>
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- tree view  -->
+    <record id="school_student_view_tree" model="ir.ui.view">
+        <field name="name">school_student_view.tree</field>
+        <field name="model">student</field>
+        <field name="arch" type="xml">
+            <tree string="">
+                <field name="nom" />
+                <field name="prenom" />
+                <field name="age" />
+                <field name="email" />
+                <field name="filiere_id" string="Filiere" />
+            </tree>
+        </field>
+    </record>
+
+    <!-- search view  -->
+    <record id="student_view_search" model="ir.ui.view">
+        <field name="name">Student Search</field>
+        <field name="model">student</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name" />
+                <group string="Group By">
+                    <filter name="group_by_class_id" string="Group by Classe" context="{'group_by':'class_id'} " />
+                </group>
+                <searchpanel>
+                    <field name="class_id" icon="fa fa-users" string='Classe' enable_counters="1" />
+                    <field name="year" icon="fa fa-list" select="multi" />
+                </searchpanel>
+            </search>
+        </field>
+    </record>
+
+    <!-- kanban view  -->
+    <record id="school_student_view_kanban" model="ir.ui.view">
+        <field name="name">school_student.view.kanban</field>
+        <field name="model">student</field>
+        <field name="arch" type="xml">
+            <kanban class="o_res_partner_kanban">
+                <field name="id" />
+                <field name="image_1920" />
+                <templates>
+                    <t t-name="kanban-box">
+                        <div>
+                            <div class="o_kanban_image" style='width:100px;'>
+                                <t t-if="record.image_1920.value">
+                                    <img t-att-src="kanban_image('student', 'image_1920', record.id.raw_value)" alt="Student" options="{'zoom': true, 'zoom_delay': 1000, 'background': true, 'preventClicks': false}" />
+                                    <field name="image_1920" widget="image" class="o_kanban_image_fill_left" options="{'zoom': true, 'zoom_delay': 1000, 'background': true, 'preventClicks': false}" />
+                                </t>
+                                <t t-if="!record.image_1920.value">
+                                    <img t-att-src="_s + &quot;/base/static/img/avatar.png&quot;" alt="Student" />
+                                </t>
+                            </div>
+                            <div class="oe_kanban_details">
+                                <h2 style="font-size:1.8rem;">
+                                    <a type="open">
+                                        <!-- <field name="name" /> -->
+                                        <h1>
+                                            <table>
+                                                <tr>
+                                                    <td style="padding-right:10px;">
+                                                        <field name="nom" required="0" />
+                                                    </td>
+                                                    <td style="padding-right:10px;">
+                                                        <field name="prenom" required="0" />
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </h1>
+                                    </a>
+                                </h2>
+                                <ul class="font-weight-bold">
+                                    <li t-if="record.name_fil.raw_value">
+                                        <field name="name_fil" />
+                                    </li>
+                                    <li t-if="record.email.raw_value" class="mb-2">
+                                        <a t-attf-href="mailto:#{record.email.value}">
+                                            <i class="fa fa-envelope" />
+                                            <field name="email" />
+                                        </a>
+                                    </li>
+                                    <li t-if="record.phone.raw_value">
+                                        <i class="fa fa-phone" />
+                                        <field name="phone" widget='phone' />
+                                    </li>
+                                </ul>
+                                <span style="position:absolute;right:2px;bottom:2px;font-weight:bold;">
+                                    <field name="student_code" />
+                                </span>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+
+    <!-- graph view  -->
+    <record id="school_student_view_graph" model="ir.ui.view">
+        <field name="name">school_student.view.graph</field>
+        <field name="model">student</field>
+        <field name="arch" type="xml">
+            <graph string="" type="bar">
+                <field name="year" />
+                <field name="name" />
+            </graph>
+        </field>
+    </record>
+
+
+    <odoo noupdate='1'>
+        <record id="unique_student_code" model="ir.sequence">
+            <field name="name">Student sequence number</field>
+            <field name="code">student.sequence.code</field>
+            <field name="active">TRUE</field>
+            <field name="padding">8</field>
+            <field name="number_next">00003894</field>
+            <field name="number_increment">1</field>
+        </record>
+    </odoo>
+
+
+    <!-- user view form when we open the user from the student view  -->
+    <record id="user_view_form" model="ir.ui.view">
+        <field name="name">res.users.form</field>
+        <field name="model">res.users</field>
+        <field name="arch" type="xml">
+            <form string="">
+                <sheet>
+                    <field name="id" invisible="1" />
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_show_groups" type="object" groups="base.group_no_one" class="oe_stat_button" icon="fa-users">
+                            <field string="Groups" name="groups_count" widget="statinfo" />
+                        </button>
+                    </div>
+                    <field name="image_1920" widget="image" class="oe_avatar" options="{&quot;zoom&quot;: true, &quot;preview_image&quot;: &quot;image_128&quot;}" />
+                    <div class="oe_title">
+                        <label for="name" class="oe_edit_only" />
+                        <h1>
+                            <field name="name" required="1" />
+                        </h1>
+                        <group>
+                            <field name="email" />
+                            <field name="login" />
+                        </group>
+                        <label for="login" class="oe_edit_only" string="Email Address" />
+                        <h2></h2>
+                        <group>
+                            <field name="create_date" readonly="1" required="0" groups="base.group_no_one" />
+                        </group>
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+    <!-- <record id="ayoub_form" model="ir.ui.view">
+        <field name="name">ayoub.form</field>
+        <field name="model">student</field>
+        <field name="arch" type="xml">
+            <form string="">
+                <sheet>
+                    <field name="user_id" />
+                </sheet>
+            </form>
+        </field>
+    </record> -->
+
+    <menuitem id="person_base_menu" name="Students" />
+
+
+    <menuitem id="school_student_all_menu" name="Students" action="school_student_action" parent="person_base_menu" />
+
+
+    <record id="view_users_form_simple_modif_inherit" model="ir.ui.view">
+        <field name="name">model.name.view.form.inherit</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form_simple_modif" />
+        <field name="arch" type="xml">
+            <!-- <xpath expr="//notebook//page" position="after">
+                <page name="Student" string="Students">
+                </page>
+            </xpath> -->
+            <field name='name' position="after">
+                <group>
+                    <field name="student_id" readonly="1" placeholder='More Infos' />
+                </group>
+            </field>
+        </field>
+    </record>
+
+
+</odoo>

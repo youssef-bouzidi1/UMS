@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="school_classe_action" model="ir.actions.act_window">
+        <field name="name">Classes</field>
+        <field name="res_model">classe</field>
+        <field name="view_mode">kanban,tree,form,graph</field>
+        <field name="domain">[]</field>
+        <field name="context">
+            {
+                'tree_view_ref':'estbm.school_classe_view_tree',
+                'form_view_ref':'estbm.school_classe_view_form',
+            }
+        </field>
+    </record>
+
+
+    <!-- form view  -->
+    <record id="school_classe_view_form" model="ir.ui.view">
+        <field name="name">school_classe_view.form</field>
+        <field name="model">classe</field>
+        <field name="arch" type="xml">
+            <form string="">
+                <field name="hide" invisible="1" />
+                <header>
+                    <button string="Random Generate" name="generate_groups" type="object" class="oe_highlight" attrs="{ 'invisible': [('hide','=',True)] }" />
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name" />
+                            <field name="capacity" />
+                        </group>
+                        <group>
+                            <field name="filiere_id" required="1" />
+                            <field name="year" />
+                            <field name="semester_1" class="oe_edit_only" attrs="{ 
+                                'invisible': ['|',('year','=','2'),('year','=',False)]
+                            }" />
+                            <field name="semester_2" class="oe_edit_only" attrs="{ 
+                                'invisible': ['|',('year','=','1'),('year','=',False)]
+                            }" />
+                            <!-- 
+                                'required': ['&#38;',('year','!=',False),('semester_2','=',False)]
+                                 'required': ['&#38;',('year','!=',False),('semester_1','=',False)] -->
+                            <field name="semester" class='oe_read_only' />
+                        </group>
+                    </group>
+                    <group>
+                        <field name="student_list" widget='many2many' />
+                    </group>
+                    <group>
+                        <field name="group_list" widget='many2many'>
+                            <tree>
+                                <field name="name" />
+                            </tree>
+                        </field>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+    <!-- tree view  -->
+    <record id="school_classe_view_tree" model="ir.ui.view">
+        <field name="name">school_classe_view.tree</field>
+        <field name="model">classe</field>
+        <field name="arch" type="xml">
+            <tree string="">
+                <field name="name" />
+                <field name="capacity" />
+                <field name="filiere_id" string="Filiere" />
+            </tree>
+        </field>
+    </record>
+
+
+    <!-- groupe action  -->
+    <record id="school_groupe_action" model="ir.actions.act_window">
+        <field name="name">Groupes</field>
+        <field name="res_model">groupe</field>
+        <field name="view_mode">kanban,tree,form,graph</field>
+        <field name="domain">[]</field>
+        <field name="context">
+            {
+                'tree_view_ref':'estbm.school_groupe_view_tree',
+                'form_view_ref':'estbm.school_groupe_view_form',
+                'kanban_view_ref':'estbm.school_groupe_view_kanban'
+            }
+        </field>
+    </record>
+
+
+    <!-- group form view  -->
+    <record id="school_groupe_view_form" model="ir.ui.view">
+        <field name="name">school_groupe_view.form</field>
+        <field name="model">groupe</field>
+        <field name="arch" type="xml">
+            <form string="">
+                <sheet>
+                    <group>
+                        <field name="name" />
+                        <field name="capacity" />
+                        <field name="class_id" />
+                    </group>
+                    <group>
+                        <field name="student_list" widget='many2many' domain="['&#38;',('class_id', '=', class_id),('groupe_id','=',False)]" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- groupe tree view  -->
+    <record id="school_groupe_view_tree" model="ir.ui.view">
+        <field name="name">school_groupe_view.tree</field>
+        <field name="model">groupe</field>
+        <field name="arch" type="xml">
+            <tree string="">
+                <field name="name" />
+                <field name="capacity" />
+            </tree>
+        </field>
+    </record>
+
+
+    <record id="school_student_from_groupe" model="ir.actions.act_window">
+        <field name="name">Student from groupe</field>
+        <field name="res_model">student</field>
+        <field name="view_mode">kanban,tree,form,graph</field>
+        <field name="context">
+            {
+                "default_groupe_id":'active_id'
+            }
+        </field>
+    </record>
+
+    <!-- groupe kanban view  -->
+    <record id="school_groupe_view_kanban" model="ir.ui.view">
+        <field name="name">school_groupe_view_kanban</field>
+        <field name="model">groupe</field>
+        <field name="arch" type="xml">
+            <kanban>
+                <field name="id" />
+                <field name="name" />
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="o_kanban_card_header">
+                            <div class="o_kanban_card_header_title">
+                                <div class="o_primary">
+                                    <h2>
+                                        <a type="open">
+                                            <field name="name" />
+                                        </a>
+                                    </h2>
+                                </div>
+                            </div>
+                            <div class="o_kanban_primary_right text-right">
+                                <h3 class='float-left'>
+                                    <field name="capacity" />
+                                    <span>
+                                        Students
+                                    </span>
+                                </h3>
+                                <!-- <button class="btn btn-primary" name="%(school_student_from_groupe)d" type="action">Students</button> -->
+                                <button class="btn btn-primary" name="show_related_students" type="object" string="Students">
+                                    Students
+                                </button>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+
+    <menuitem id="school_classe_all_menu" name="Classes" action="school_classe_action" parent="filiere_base_menu" />
+    <menuitem id="school_groupe_all_menu" name="Groupes" action="school_groupe_action" parent="filiere_base_menu" />
+
+</odoo>

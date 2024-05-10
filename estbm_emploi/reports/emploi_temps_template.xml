@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="emploi_temps_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.external_layout">
+                    <div class="page">
+
+
+
+                        <table class="table table-bordered">
+                            <thead>
+                              <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">08h30 - 10h00</th>
+                                <th scope="col">10h30 - 12h00</th>
+                                <t t-if="any(d.temps_id.name=='12:30-14:00' for d in doc.day_0)">
+                                    <th scope="col">12h30 - 14h00</th>
+                                </t>
+                                <th scope="col">14h30 - 16h00</th>
+                                <th scope="col">16h30 - 18h00</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <th scope="row">Lundi</th>
+                                <td>
+                                    <!-- <t t-esc="len(doc.day_0)"/> -->
+                                </td>
+                                <td>Otto</td>
+                                <td>@mdo</td>
+                              </tr>
+                            </tbody>
+                        </table>
+                        
+                        
+                        <!-- <tr>
+                          <th scope="row">Mardi</th>
+                          <td>Jacob</td>
+                          <td>Thornton</td>
+                          <td>@fat</td>
+                        </tr> -->
+                        <!-- <tr>
+                          <th scope="row">3</th>
+                          <td>Larry the Bird</td>
+                          <td colspan="2">Larry the Bird</td>
+                          <td>@twitter</td>
+                        </tr> -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+                        <!-- <div class="row" style='margin:0px;padding:0px;'>
+                            <div class="col-4 d-flex flex-row" style="border: 1px solid red;height: 150px;">
+                                <img src="est.png" class="img img-fluid h-75"/>
+                                <img t-att-src="'/estbm/static/src/img/est.png'" class="img img-fluid h-50" />
+                                <div class="d-flex flex-column m-1 justify-content-center align-items-center">
+                                    <style>
+                                        h6{
+                                            font-size: 0.7rem;
+                                        }
+                                    </style>
+                                    <h6>
+                                        Université Sultan Moulay Slimane
+                                    </h6>
+                                    <h6>Ecole Supérieure de Technologie</h6>
+                                    <h6>Béni Mellal</h6>
+                                </div>
+                            </div>
+                            <div class="col-5" style="border: 1px solid red;height: 100px;">
+                    
+                            </div>
+                            <div class="col-3" style="border: 1px solid red;height: 100px;">
+                    
+                            </div>
+                        </div> -->
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+    
+</odoo>

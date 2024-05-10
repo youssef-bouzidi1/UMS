@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="student_id_card_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <style>
+                            #ayoub{
+                                margin: 0px;
+                                padding: 2px;
+                                border: 2px solid black;
+                                width: 550px;
+                                height: 330px;
+                                border-color: #00bbff;
+                                border-radius: 10px;
+                                background-color: white;
+                            }
+                            img{
+                                width: 5rem;
+                                height: 5rem;
+                            }
+                            h2{
+                                font-size: 1.2rem;
+                                color: #00bbff;
+                                text-align: center;
+                                font-weight: 500;
+                            }
+                            h4{
+                                font-size: 1.1rem;
+                                color: #00bbff;
+                                text-align: center;
+                                font-weight: bold;
+                            }
+                            h5{
+                                font-size: 1.1rem;
+                                color: #00bbff;
+                                text-align: center;
+                                font-weight: bold;
+                            }
+                            .div_class{
+                                height: 5px;
+                                background-color: #e8bf18;
+                                width: 98%;
+                                margin: auto;
+                                margin-top:4px;
+                            }
+                            h3{
+                                font-size: 1rem;
+                                font-weight: bold;
+                            }
+                            strong{
+                                font-size: 0.7rem;
+                                margin-left: 5px;
+                            }
+                            .info{
+                                margin-top: 10px;
+                                margin-left: 10px;
+                                display: flex;
+                                flex-direction: row;
+                            }
+                            td{
+                                text-align: right;
+                                border:none!important;
+                            }
+                        </style>
+                        <!-- <div class="container-fluid"> -->
+                            <!-- <div style='width:100%;display: flex;justify-content: center;align-items: center;height: 100vh;'> -->
+                            <div id="ayoub" style='margin:auto;'>
+                                <div class="row m-0">
+                                    <div class="col-2 p-0">
+                                        <img t-att-src="'/estbm/static/src/img/usms2.png'" />
+                                    </div>
+                                    <div class="col-8 p-0">
+                                        <h2 style='color:#00bbff;'>
+                                            Université Sultan Moulay Slimane
+                                        </h2>
+                                        <h4>
+                                            École Supérieure de Technologie
+                                        </h4>
+                                        <h5>
+                                            Béni Mellal
+                                        </h5>
+                                    </div>
+                                    <div class="col-2 p-0">
+                                        <img t-att-src="'/estbm/static/src/img/est.png'" />
+                                    </div>
+                                </div>
+                                <div class='div_class'>
+
+                                </div>
+                                <div style="width: 100%;text-align: center;">
+                                    <strong style="float: left;">
+                                        <t t-esc="doc.card_year"/>
+                                        <!-- 2020/2021 -->
+                                    </strong>
+                                    <h3 style="display: inline;opacity:1;">
+                                        Carte d'etudiant
+                                    </h3>
+                                </div>
+                                <div class="info">
+                                    <div style='float:left;margin-top:10px;'>
+                                        <img t-if='doc.image_1920' t-att-src="'data:image/png;base64,%s' % to_text(doc.image_1920)" style="display:block;"/>
+                                        <!-- <span t-field="doc.image_128" t-field-options='{"widget": "image"}'/> -->
+                                        <!-- <img t-att-src="'/estbm/static/src/img/ayoub.jpg'" style='display: block;' /> -->
+                                        <span>
+                                            <b style="font-size: 0.8rem;">
+                                                <t t-esc="doc.student_code"/>
+                                            </b>
+                                        </span>
+                                    </div>
+
+                                    <div style="position: relative;width: 100%;">
+                                        <div style="margin-bottom: 20px;">
+                                            <span>Filiere : </span>
+                                            <b>
+                                                <!-- <t t-esc="doc.filiere_id.type"/> -->
+                                                <t t-esc="doc.filiere_id.name"/>
+                                                <!-- DUT Genie informatique -->
+                                            </b>
+                                        </div>
+                                        <table style='border:none;border-spacing: 50px 0px;'>
+                                            <tr>
+                                                <td style='border:none;'>
+                                                    Nom :
+                                                </td>
+                                                <td style='padding-left: 20px;'>
+                                                    <b>
+                                                        <t t-esc="doc.nom"/>
+                                                    </b>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    Prenom :
+                                                </td>
+                                                <td>
+                                                    <b>
+                                                        <t t-esc="doc.prenom"/>
+                                                    </b>
+                                                </td>
+                                            </tr>
+                                        </table>
+
+
+                                        <div style="margin-top: 20px;">
+                                            <span>CNE/Massar : </span>
+                                            <b style="margin-left: 25px;">
+                                                <t t-esc="doc.CNE"/>
+                                            </b>
+                                        </div>
+
+
+
+                                        <table style="position: absolute; right: 0px;top: 57px;border:none;">
+                                            <tr>
+                                                <td>
+                                                    نوري
+                                                </td>
+                                                <td>
+                                                    <b>
+                                                        :النسب
+                                                    </b>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    ايوب
+                                                </td>
+                                                <td>
+                                                    <b>
+                                                        :الاسم
+                                                    </b>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                </td>
+                                                <td>
+                                                    <b>
+                                                        : الرقم الوطني للطالب
+                                                    </b>
+                                                </td>
+                                            </tr>
+                                        </table>
+
+
+
+                                        <div style="margin-top: 20px;margin-left: 150px;">
+                                            <span>CIN : </span>
+                                            <b style='margin: 0px 40px;'>
+                                                <t t-esc="doc.CIN"/>
+                                            </b>
+                                            <b style="text-align: right;margin-left:10px;">
+                                                : البطاقة الوطنية للتعريف
+                                            </b>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <!-- </div> -->
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+    
+</odoo>
